@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
  * Created by Vaibhav Mital IITian on 06-03-2018.
  */
 
+
 public class enablePermission {
     public static void startInstalledAppDetailsActivity(final Activity context) {
         AlertDialog.Builder helpBuilder = new AlertDialog.Builder(context);
