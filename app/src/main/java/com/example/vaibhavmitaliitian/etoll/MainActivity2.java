@@ -1,12 +1,14 @@
 package com.example.vaibhavmitaliitian.etoll;
 
-import android.content.Intent;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +20,15 @@ import com.estimote.coresdk.service.BeaconManager;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
 
 public class MainActivity2 extends AppCompatActivity {
 
+    int bv = Build.VERSION.SDK_INT;
     private TextView mTextMessage;
     private BeaconRegion region;
     private BeaconManager beaconManager;
@@ -84,7 +88,6 @@ public class MainActivity2 extends AppCompatActivity {
             if (!defaultFile.exists()) {
                 defaultFile.mkdirs();
             }
-            global g = (global) getApplicationContext();
             String filename = "Data.ser";
             FileInputStream file = new FileInputStream(new File(defaultFile + File.separator, filename));
             File f = new File(defaultFile, filename);
@@ -121,6 +124,4 @@ public class MainActivity2 extends AppCompatActivity {
         super.onPause();
         beaconManager.stopRanging(region);
     }
-
-
 }

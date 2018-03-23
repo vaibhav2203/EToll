@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class AdapterItem {
     String toll;
-    Double money;
-    Date date;
+    String money;
+    String date;
+    String transactionID;
 }
