@@ -1,6 +1,13 @@
 package com.example.vaibhavmitaliitian.etoll;
 
 import android.app.ProgressDialog;
+import android.app.Activity;
+import instamojo.library.InstapayListener;
+import instamojo.library.InstamojoPay;
+import instamojo.library.Config;
+import org.json.JSONObject;
+import org.json.JSONException;
+import android.content.IntentFilter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +29,13 @@ public class loginActivity extends AppCompatActivity {
     private ProgressDialog progress;
     private TextView resp, response;
 
+    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // Call the function callInstamojo to start payment here
         progress = new ProgressDialog(this);
         progress.setCancelable(false);
         progress.setMessage("Please Wait...");

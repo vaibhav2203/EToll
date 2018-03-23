@@ -1,2 +1,2 @@
- tbl_info        id name email phone sex address vehicleNo balance 
- tbl_transaction id bool name email phone sex address vehicleNo amount    // bool  [ {true - add } , { false - deduct} ] 
+ tbl_info        id name email phone sex address vehicle_number balance 
+ tbl_transaction id type name  vehicle_number amount transactionId   // bool  [ {true - add } , { false - deduct} ] 

@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vaibhavmitaliitian.etoll">
 
+    <uses-permission-sdk-23 android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission-sdk-23 android:name="android.permission.READ_SMS" />
+    <uses-permission-sdk-23 android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".global"
         android:allowBackup="true"
@@ -18,6 +28,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".loginActivity" />
+
+        <meta-data
+            android:name="instamojo.orderauth.url"
+            android:value="https://pranjalguptacse.000webhostapp.com/access_token.php" />
+
+        <activity android:name=".fillForm"></activity>
     </application>
 
 </manifest>

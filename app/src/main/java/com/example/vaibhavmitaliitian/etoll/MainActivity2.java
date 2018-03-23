@@ -36,10 +36,13 @@ public class MainActivity2 extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.layout,new moneyFrag()).commit();
                     return true;
                 case R.id.navigation_dashboard:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.layout,new HistoryFrag()).commit();
                     return true;
                 case R.id.navigation_notifications:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.layout,new nearbyTollFrag()).commit();
                     return true;
             }
             return false;
