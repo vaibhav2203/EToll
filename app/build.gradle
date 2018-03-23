@@ -50,6 +50,9 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:26.1.0'
     implementation 'com.android.support:support-v4:26.1.0'
     testImplementation 'junit:junit:4.12'
+    compile files('libs/httpclient-4.5.3.jar')
+    compile files('libs/httpcore-4.4.6.jar')
+    compile files('libs/httpmime-4.3.jar')
     compile 'com.estimote:sdk:1.0.3:release@aar'
     //androidTestImplementation 'com.android.support.test:runner:1.0.1'
     // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

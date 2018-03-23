@@ -38,6 +38,7 @@ public class GridViewAdapter extends ArrayAdapter<AdapterItem> {
                 itemView = layoutInflater.inflate(resourceId, parent, false);
                 holder = new ViewHolder();
                 holder.date = (TextView) itemView.findViewById(R.id.date);
+                holder.transactionID = (TextView) itemView.findViewById(R.id.transactionID);
                 holder.toll = (TextView) itemView.findViewById(R.id.toll);
                 holder.money = (TextView) itemView.findViewById(R.id.money);
                 itemView.setTag(holder);
@@ -47,6 +48,7 @@ public class GridViewAdapter extends ArrayAdapter<AdapterItem> {
             AdapterItem desc = data.get(position);
             holder.date.setText(desc.date.toString());
             holder.money.setText(String.valueOf(desc.money));
+            holder.transactionID.setText(String.valueOf(desc.transactionID));
             holder.toll.setText(desc.toll);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +59,7 @@ public class GridViewAdapter extends ArrayAdapter<AdapterItem> {
     }
 
     public class ViewHolder {
-        TextView date, money, toll;
+        TextView date, money, toll,transactionID;
     }
 
 }
