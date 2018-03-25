@@ -1,13 +1,6 @@
 package com.example.vaibhavmitaliitian.etoll;
 
 import android.app.ProgressDialog;
-import android.app.Activity;
-import instamojo.library.InstapayListener;
-import instamojo.library.InstamojoPay;
-import instamojo.library.Config;
-import org.json.JSONObject;
-import org.json.JSONException;
-import android.content.IntentFilter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class loginActivity extends AppCompatActivity {
@@ -58,16 +50,16 @@ public class loginActivity extends AppCompatActivity {
         progress.setCancelable(false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         edit = preferences.edit();
+        global g = (global) getApplicationContext();
+        g.balance = preferences.getString("Balance","100");
+        if(!preferences.getString("ID","0").equals("0")){
+            g.id = String.valueOf(preferences.getString("ID","0"));
+            Intent intent = new Intent(loginActivity.this,MainActivity2.class);
+            startActivity(intent);
+        }
         progress.setMessage("Please Wait...");
-        edit.putString("Name","Guest");
-        edit.putString("Email","");
-        edit.putString("Phone","");
-        edit.putString("Address","");
-        edit.putString("Vehicle","");
-        edit.apply();
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         resp = (TextView) findViewById(R.id.tvresponse);
-        response = (TextView) findViewById(R.id.tvresp);
         user = (EditText) findViewById(R.id.etuser);
         pass = (EditText) findViewById(R.id.etpass);
         signup = (Button) findViewById(R.id.bsignup);
@@ -77,6 +69,8 @@ public class loginActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(loginActivity.this,signUp.class);
+                startActivity(intent);
             }
         });
         fp.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +90,8 @@ public class loginActivity extends AppCompatActivity {
                     Intent intent = new Intent(loginActivity.this, MainActivity2.class);
                     startActivity(intent);
                     try {
-                        url = new URL("http://shaanucomputers.com/webservice.asmx?ShowDetails?txtUserName="+user.getText().toString()+"&txtPassword=" + pass.getText().toString());
+                        //url = new URL("http://shaanucomputers.com/webservice.asmx?ShowListHolidays");
+                        url = new URL("http://shaanucomputers.com/webservice.asmx/ShowDetails?txtUserName="+user.getText().toString()+"&txtPassword=" + pass.getText().toString());
                         LongOperation checkLogin = new LongOperation();
                         checkLogin.execute("");
                     } catch (Exception e) {
@@ -155,13 +150,15 @@ public class loginActivity extends AppCompatActivity {
                     for (int i = 0; i < nl.getLength(); i++) {
 
                         edit.putString("Name",parser.getValue((Element) nl.item(i), "Name"));
-                        edit.putString("Name",parser.getValue((Element) nl.item(i), "Name"));
                         edit.putString("Address",parser.getValue((Element) nl.item(i), "Address"));
                         edit.putString("ID",parser.getValue((Element) nl.item(i), "InfoID"));
                         edit.putString("Email",parser.getValue((Element) nl.item(i), "Email"));
+                        edit.putString("Balance",parser.getValue((Element) nl.item(i), "Balance"));
                         edit.putString("Phone",parser.getValue((Element) nl.item(i), "Mobile"));
                         edit.putString("Vehicle",parser.getValue((Element) nl.item(i), "VehicleNo"));
-                        edit.apply();
+                        edit.commit();
+                        global g=  (global) getApplicationContext();
+                        g.id = parser.getValue((Element) nl.item(i), "InfoID");
                         Intent intent = new Intent(loginActivity.this,MainActivity2.class);
                         finish();
                         startActivity(intent);

@@ -1,14 +1,15 @@
 package com.example.vaibhavmitaliitian.etoll;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +22,6 @@ import com.estimote.coresdk.service.BeaconManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,14 +39,19 @@ public class MainActivity2 extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.layout,new moneyFrag()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.layout, new moneyFrag()).commit();
                     return true;
                 case R.id.navigation_dashboard:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.layout,new HistoryFrag()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.layout, new HistoryFrag()).commit();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.nearbyTollbooth :
                     getSupportFragmentManager().beginTransaction().replace(R.id.layout,new nearbyTollFrag()).commit();
+                return true  ;
+                    /*
+                case R.id.navigation_notifications:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.layout, new nearbyTollFrag()).commit();
                     return true;
+*/
             }
             return false;
         }
@@ -57,7 +61,7 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
+//        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("ID", 5).apply();
         mTextMessage = (TextView) findViewById(R.id.message);
         beaconManager = new BeaconManager(this);
         final global application = (global) getApplicationContext();
@@ -79,9 +83,37 @@ public class MainActivity2 extends AppCompatActivity {
                 beaconManager.startRanging(region);
             }
         });
-        update();
+        //update();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new moneyFrag()).commit();
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+
+            case R.id.setting_profile:
+                intent = new Intent(MainActivity2.this, profileActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.faq :
+                intent = new Intent(MainActivity2.this, aboutUs.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void update() {
@@ -127,4 +159,6 @@ public class MainActivity2 extends AppCompatActivity {
         super.onPause();
         beaconManager.stopRanging(region);
     }
+
+
 }

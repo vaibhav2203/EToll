@@ -17,20 +17,9 @@
         android:padding="4dp"
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
-        android:text="Shaanu Computers"
+        android:text="E TOLL"
         android:textSize="35sp"
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvtitle"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/textView1"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="Sign Up"
-        android:textSize="24sp" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

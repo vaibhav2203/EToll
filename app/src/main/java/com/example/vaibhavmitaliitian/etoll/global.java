@@ -6,7 +6,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
@@ -14,6 +16,8 @@ import com.estimote.coresdk.observation.region.beacon.BeaconRegion;
 import com.estimote.coresdk.recognition.packets.Beacon;
 import com.estimote.coresdk.service.BeaconManager;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -26,8 +30,9 @@ import java.util.UUID;
 public class global extends Application implements TextToSpeech.OnInitListener {
     private BeaconManager beaconManager;
     private TextToSpeech myTTS;
-    String words;
-    DataSave data = new DataSave();
+    String balance = "Rs 100",id;
+    String words, amount, numBoothID;
+    com.example.vaibhavmitaliitian.etoll.DataSave data = new com.example.vaibhavmitaliitian.etoll.DataSave();
 
     public void speakWords(String speech) {
         words = speech;
@@ -39,6 +44,8 @@ public class global extends Application implements TextToSpeech.OnInitListener {
         }
     }
 
+    private final int resultId = 236;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,19 +56,35 @@ public class global extends Application implements TextToSpeech.OnInitListener {
 
             @Override
             public void onEnteredRegion(BeaconRegion beaconRegion, List<Beacon> beacons) {
+                if (beacons.get(0).getMinor() == 49999) {
+                    amount = "10";
+                    numBoothID = "1";
+                } else {
+                    amount = "20";
+                    numBoothID = "2";
+                }
+                try {
 
+                    Date date = Calendar.getInstance().getTime();
+                    balance = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("Balance","100") ;
+                    //balance = balance.substring(3) ;
+                    balance  = String.valueOf(Integer.valueOf(balance) - Integer.valueOf(amount));
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("Balance",balance).apply();
+                    UpdateToll updateToll = new UpdateToll("http://shaanucomputers.com/webservice.asmx/InsertProjectTransaction?infoId=" + id + "&amount=" + amount + "&boolean=1&numBoothID=" + numBoothID + "&numPaymentTransactID=0&date=" + date.toString(), getApplicationContext());
 
-                showNotification(
-                        "Your gate closes in 47 minutes.",
-                        "Current security wait time is 15 minutes, "
-                                + "and it's a 5 minute walk from security to the gate. "
-                                + "Looks like you've got plenty of time!");
+                    updateToll.execute("");
 
+                     Intent intent = new Intent(getApplicationContext(),MainActivity2.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onExitedRegion(BeaconRegion beaconRegion) {
                 showNotification("BYe", "BYE");
+                Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -75,8 +98,9 @@ public class global extends Application implements TextToSpeech.OnInitListener {
         });
     }
 
+
     public void showNotification(String title, String message) {
-        Intent notifyIntent = new Intent(this, MainActivity2.class);
+        Intent notifyIntent = new Intent(this, com.example.vaibhavmitaliitian.etoll.MainActivity2.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 0,
                 new Intent[]{notifyIntent}, PendingIntent.FLAG_UPDATE_CURRENT);

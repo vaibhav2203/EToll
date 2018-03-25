@@ -8,5 +8,5 @@ import java.util.ArrayList;
  */
 
 public class DataSave implements Serializable {
-    ArrayList<AdapterItem> list;
+    ArrayList<com.example.vaibhavmitaliitian.etoll.AdapterItem> list;
 }

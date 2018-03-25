@@ -1,19 +1,68 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="80dp"
+    android:layout_marginBottom="60dp"
     tools:context="com.example.vaibhavmitaliitian.etoll.moneyFrag">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+      <LinearLayout
+        android:layout_margin="24dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="46dp"
+        android:background="@drawable/border_balance"
+        android:orientation="horizontal"
+       >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="Balance"
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:layout_weight="1"
+            android:gravity="center"/>
 
-    <Button
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/btn_add"
-        />
+        <TextView
+            android:layout_width="0dp"
+            android:id="@+id/amount_text_view"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rs 100"
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textSize="24dp"
 
-</RelativeLayout>
+            android:gravity="center" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+    <GridView
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp" />
+   </RelativeLayout>
+
+</LinearLayout>

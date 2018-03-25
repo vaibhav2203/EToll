@@ -13,6 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.vaibhavmitaliitian.etoll.R;
+import com.example.vaibhavmitaliitian.etoll.XMLParser;
+
 import org.apache.http.client.ClientProtocolException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -34,11 +37,11 @@ public class HistoryFrag extends Fragment {
 
     private RelativeLayout layout;
     private GridView grid;
-    private AdapterItem item;
-    private ArrayList<AdapterItem> data;
+    private com.example.vaibhavmitaliitian.etoll.AdapterItem item;
+    private ArrayList<com.example.vaibhavmitaliitian.etoll.AdapterItem> data;
     private URL url;
     private XMLParser parser;
-    private GridViewAdapter adapter;
+    private com.example.vaibhavmitaliitian.etoll.GridViewAdapter adapter;
     private ProgressBar progressBar;
 
     public HistoryFrag() {
@@ -50,21 +53,23 @@ public class HistoryFrag extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = (RelativeLayout) inflater.inflate(R.layout.fragment_history, container, false);
-        global g = (global) getActivity().getApplicationContext();
+        com.example.vaibhavmitaliitian.etoll.global g = (com.example.vaibhavmitaliitian.etoll.global) getActivity().getApplicationContext();
         data = g.data.list;
         grid = (GridView) layout.findViewById(R.id.gridHistory);
         progressBar = (ProgressBar) layout.findViewById(R.id.progressBar);
         data = new ArrayList<>();
-        item = new AdapterItem();
+        item = new com.example.vaibhavmitaliitian.etoll.AdapterItem();
         item.money = "Money Paid";
         item.transactionID = "Transaction ID";
         item.toll = "At TOLL";
         item.date = "Date";
+        data.add(item);
         parser = new XMLParser();
-        adapter = new GridViewAdapter(getActivity(), R.layout.item_layout, data);
+        adapter = new com.example.vaibhavmitaliitian.etoll.GridViewAdapter(getActivity(), R.layout.item_layout, data);
+        grid.setAdapter(adapter);
         try {
-            Integer id = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("ID",0);
-            url = new URL("http://shaanucomputers.com/webservice.asmx?ShowProjectTransactionDataByID?id=" + String.valueOf(id));
+            Integer id = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("ID","0"));
+            url = new URL("http://shaanucomputers.com/webservice.asmx/ShowProjectTransactionDataByID?id=" + String.valueOf(id));
             LongOperation operation = new LongOperation();
             operation.execute("");
         } catch (Exception e) {
@@ -116,23 +121,26 @@ public class HistoryFrag extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Failure,Please try again", Toast.LENGTH_LONG).show();
                 } else {
                     for (int i = 0; i < nl.getLength(); i++) {
-                        item = new AdapterItem();
+                        if(parser.getValue((Element) nl.item(i), "Bool").equals("0")){
+                            continue;
+                        }
+                        item = new com.example.vaibhavmitaliitian.etoll.AdapterItem();
                         item.money = String.valueOf(parser.getValue((Element) nl.item(i), "Amount"));
-                        item.date = "hello";
+                        item.date = String.valueOf(parser.getValue((Element) nl.item(i), "date"));
                         //item.date = String.valueOf(parser.getValue((Element) nl.item(i), "FieldName"));
                         item.toll = String.valueOf(parser.getValue((Element) nl.item(i), "BoothID"));
                         item.transactionID = String.valueOf(parser.getValue((Element) nl.item(i), "TransactionID"));
                         data.add(item);
                     }
                     adapter.notifyDataSetChanged();
-                    global g = (global) getActivity().getApplicationContext();
+                    com.example.vaibhavmitaliitian.etoll.global g = (com.example.vaibhavmitaliitian.etoll.global) getActivity().getApplicationContext();
                     g.data.list = data;
                 }
                 Toast.makeText(getActivity().getApplicationContext(), "Profile Updated", Toast.LENGTH_LONG).show();
-                getFragmentManager().popBackStack();
+                //getFragmentManager().popBackStack();
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(getActivity(), "No data returned from server", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "No data returned from server", Toast.LENGTH_LONG).show();
             }
             progressBar.setVisibility(View.GONE);
         }
